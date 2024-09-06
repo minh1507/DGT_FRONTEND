@@ -1,0 +1,32 @@
+.header-admin-page {
+    display: flex;
+
+    align-items: center;
+
+    background-color: lightblue;
+
+    padding: 7px 14px !important;
+
+    font-size: 0.8rem;
+
+    .header-admin-page-avatar {
+        cursor: pointer;
+    }
+
+    .p-menubar {
+        padding: unset;
+        background: unset;
+        color: #495057;
+        border: unset;
+        border-radius: unset;
+    }
+
+    .header-admin-page-menu-bar{
+        background-color: transparent !important;
+        flex-grow: 1;
+
+        &:hover{
+            background-color: transparent !important;
+        }
+    }
+}

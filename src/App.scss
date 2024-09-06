@@ -1,0 +1,100 @@
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    color-scheme: light dark;
+  
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    margin: 0;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0 !important;
+  }
+  
+  .input {
+    height: 37px;
+    font-size: 0.8rem;
+  }
+  
+  input {
+    outline: none !important;
+  }
+  
+  .p-card .p-card-body {
+    padding: 0;
+  }
+  
+  .p-card-content {
+    padding: 0;
+  }
+  
+  .button {
+    height: 37px;
+    border-radius: 5px 5px 5px 5px;
+  
+    width: 100%;
+  }
+  
+  small {
+    font-size: 0.8rem !important;
+    color: red;
+  }
+  
+  .p-menu.p-menu-overlay {
+    padding: 0;
+  }
+  
+  .p-menubar-root-list > .p-menuitem-active > .p-submenu-list {
+    padding: 0;
+  }
+  .p-menuitem-content{
+    background: transparent !important
+  }
+  .p-menuitem-content:hover {
+    background: transparent !important
+  }
+  
+  .p-focus {
+    background: transparent !important
+  }
+  
+  .no-copy {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Internet Explorer/Edge */
+    user-select: none;         /* Non-prefixed version, currently supported by Chrome and Opera */
+  }
+  
+  
+  .header-title{
+    font-weight: unset !important;
+    color: cornflowerblue;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  @media screen and (max-width: 270px) {
+    body {
+      display: none;
+    }
+  }
+  
+  @media screen and (max-width: 565px) {
+    h1 {
+      font-size: 2rem !important;
+    }
+  }
+  

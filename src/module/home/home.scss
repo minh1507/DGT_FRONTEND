@@ -1,0 +1,19 @@
+.home-admin-page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    img{
+        width: 100%;
+        aspect-ratio: 3/2;
+        height: auto;
+        max-width: 450px;
+    }
+    p{
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+}

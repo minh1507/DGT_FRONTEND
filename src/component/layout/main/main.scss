@@ -1,0 +1,14 @@
+.layout-admin-page{
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    .layout-admin-page-main{
+        padding: 14px 24px;
+
+        flex-grow: 1;
+
+        overflow-x: auto;
+    }
+}
