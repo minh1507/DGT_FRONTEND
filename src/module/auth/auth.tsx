@@ -9,10 +9,12 @@ import "./auth.scss";
 import useToast from "../../hook/toast/toast";
 import { useTitle } from "../../hook/title/title";
 import { Login } from "./type/login";
+import { useCookies } from "react-cookie";
 import Yup from "../../yupConfig";
 
 function Auth() {
   const { showToast } = useToast();
+  const [cookies, setCookie] = useCookies(['ACCESS_TOKEN']);
   useTitle("login");
   const navigate = useNavigate();
   const schema = Yup.object().shape({
@@ -30,7 +32,7 @@ function Auth() {
   const onSubmit = (data: Login) => {
     console.log(data);
     showToast("Login successfully", 'success');
-    navigate("/home");
+    setCookie('ACCESS_TOKEN', '123')
   };
 
   const title = <h3 className="text-center">Sign in</h3>;

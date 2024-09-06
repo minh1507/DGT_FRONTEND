@@ -6,13 +6,12 @@ import { classNames } from "primereact/utils";
 import { useNavigate } from "react-router-dom";
 import { Menubar } from "primereact/menubar";
 import {Badge} from "primereact/badge";
-import StringUtil from "../../../utils/string";
 import { useCookies } from "react-cookie";
 import useToast from "../../../hook/toast/toast";
 
 function Header() {
   const { showToast } = useToast();
-  const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["ACCESS_TOKEN"]);
   const navigation = useNavigate();
   const menu = useRef<Menu>(null);
 
@@ -50,7 +49,7 @@ function Header() {
     {
       command: () => {
         showToast("Logout successfully", 'success');
-        navigation("/login");
+        removeCookie('ACCESS_TOKEN')
       },
       label: "Logout",
       icon: "pi pi-sign-out",
