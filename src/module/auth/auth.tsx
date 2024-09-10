@@ -4,19 +4,19 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
-import "./auth.scss";
 import useToast from "../../hook/toast/toast";
 import { useTitle } from "../../hook/title/title";
 import { Login } from "./type/login";
 import { useCookies } from "react-cookie";
 import Yup from "../../yupConfig";
+import "./auth.scss";
+import { AuthService } from "../../service/auth";
 
 function Auth() {
   const { showToast } = useToast();
   const [cookies, setCookie] = useCookies(['ACCESS_TOKEN']);
+  
   useTitle("login");
-  const navigate = useNavigate();
   const schema = Yup.object().shape({
     username: Yup.string().required().label("username"),
     password: Yup.string().required().label("password"),
@@ -29,10 +29,15 @@ function Auth() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data: Login) => {
-    console.log(data);
-    showToast("Login successfully", 'success');
-    setCookie('ACCESS_TOKEN', '123')
+  const onSubmit = async (data: Login) => {
+    const result = await AuthService.login(data.username, data.password)
+    if(result.status == 200) {
+      showToast("Login successfully", 'success');
+      setCookie('ACCESS_TOKEN', '123')
+    }
+    else{
+      console.log(result)
+    }
   };
 
   const title = <h3 className="text-center">Sign in</h3>;

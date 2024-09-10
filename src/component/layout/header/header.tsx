@@ -8,13 +8,15 @@ import { Menubar } from "primereact/menubar";
 import {Badge} from "primereact/badge";
 import { useCookies } from "react-cookie";
 import useToast from "../../../hook/toast/toast";
+import { useRecoilState } from "recoil";
+import { authState } from "../../../module/auth/state";
 
 function Header() {
   const { showToast } = useToast();
   const [cookies, setCookie, removeCookie] = useCookies(["ACCESS_TOKEN"]);
   const navigation = useNavigate();
   const menu = useRef<Menu>(null);
-
+  const [auth, setAuth] = useRecoilState(authState);
   const itemsMenuRight = [
     {
       template: (item: any, options: any) => {
