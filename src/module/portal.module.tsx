@@ -6,6 +6,7 @@ import { useCookies } from "react-cookie";
 const portalNamespace = {
   Home: lazy(() => import("./home/home")),
   Auth: lazy(() => import("./auth/auth")),
+  Category: lazy(() => import("./category/category"))
 };
 
 const SharedNamespace = {
@@ -33,6 +34,7 @@ function PortalModule() {
           <Route path="login" element={<Navigate to="/" />} />
 
           <Route path="" element={<LayoutNamespace.Layout />}>
+            <Route path="/category" element={<portalNamespace.Category />} />
             <Route path="/" element={<portalNamespace.Home />} />
             <Route path="home" element={<Navigate to="/" />} />
           </Route>

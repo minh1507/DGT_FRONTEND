@@ -11,10 +11,12 @@ import { useCookies } from "react-cookie";
 import Yup from "../../yupConfig";
 import "./auth.scss";
 import { AuthService } from "../../service/auth";
+import { useNavigate } from "react-router-dom";
 
 function Auth() {
   const { showToast } = useToast();
   const [cookies, setCookie] = useCookies(['ACCESS_TOKEN']);
+  const navigate = useNavigate()
   
   useTitle("login");
   const schema = Yup.object().shape({
@@ -30,14 +32,18 @@ function Auth() {
     resolver: yupResolver(schema),
   });
   const onSubmit = async (data: Login) => {
-    const result = await AuthService.login(data.username, data.password)
-    if(result.status == 200) {
-      showToast("Login successfully", 'success');
-      setCookie('ACCESS_TOKEN', '123')
-    }
-    else{
-      console.log(result)
-    }
+    // const result = await AuthService.login(data.username, data.password)
+    // if(result.status == 200) {
+    //   showToast("Login successfully", 'success');
+    //   setCookie('ACCESS_TOKEN', '123')
+    // }
+    // else{
+    //   console.log(result)
+    // }
+       
+    setCookie('ACCESS_TOKEN', '123')
+    navigate("/")
+    showToast("Login successfully", 'success');
   };
 
   const title = <h3 className="text-center">Sign in</h3>;

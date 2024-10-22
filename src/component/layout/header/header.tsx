@@ -60,14 +60,14 @@ function Header() {
 
   const itemsMenuLeft = [
     {
-      label: "Subject",
+      label: "Đối tượng",
       icon: "pi pi-server",
       items: [
         {
-          label: "DGT",
+          label: "Danh mục",
           icon: "pi pi-shield",
           command: () => {
-            navigation("/role");
+            navigation("/category");
           },
         },
       ],
