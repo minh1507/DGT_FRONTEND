@@ -1,7 +1,7 @@
 import { DataTable } from "primereact/datatable";
 import { useTitle } from "../../hook/title/title";
 import { Column } from "primereact/column";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { useForm } from "react-hook-form";
@@ -11,30 +11,21 @@ import { Divider } from "primereact/divider";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import "./category.scss"
+import { CategoryService } from "../../service/category";
+import { ICategory } from "./type/category";
+import useToast from "../../hook/toast/toast";
 
 function Category() {
-  const [products, setProducts] = useState([
-    {
-      name: "2A Mĩ Đình",
-      code: "abc",
-    },
-    {
-      name: "2A Mĩ Đình",
-      code: "abc",
-    },
-    {
-      name: "2A Mĩ Đình",
-      code: "abc",
-    },
-    {
-      name: "2A Mĩ Đình",
-      code: "abc",
-    },
-    {
-      name: "2A Mĩ Đình",
-      code: "abc",
-    },
-  ]);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    findAll()
+  }, []);
+
+  const findAll = async () => {
+    const categories = await CategoryService.findAll()
+    setCategories(categories)
+  }
 
   const [selectedProducts, setSelectedProducts] = useState([]);
 
@@ -76,11 +67,17 @@ function Category() {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      name: '', 
+      code: '',
+    },
   });
-  const onSearch = (data: any) => {
-    console.log(data);
+
+  const onSearch = async (data: ICategory) => {
+    console.log(1)
   };
 
   const leftToolbarTemplate = () => {
@@ -96,6 +93,15 @@ function Category() {
       </div>
     );
   };
+
+  const { showToast } = useToast();
+
+  const onSubmit = async (data: ICategory) => {
+    await CategoryService.create(data) 
+    reset();
+    showToast("Login successfully", 'success');
+  };
+
 
   return (
     <section >
@@ -113,7 +119,7 @@ function Category() {
         left={leftToolbarTemplate}
       ></Toolbar>
       <DataTable
-        value={products}
+        value={categories}
         tableStyle={{ minWidth: "50rem" }}
         selectionMode={null}
         selection={selectedProducts}
@@ -163,8 +169,8 @@ function Category() {
 
         <div className="flex justify-content-end">
           <Button
-            onClick={handleSubmit((data) => {
-              console.log(data);
+            onClick={handleSubmit(async (data) => {
+              await onSubmit(data)
               if (!visible) return;
               setVisible(false);
             })}
