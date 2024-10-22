@@ -17,6 +17,7 @@ import useToast from "../../hook/toast/toast";
 
 function Category() {
   const [categories, setCategories] = useState([]);
+  const [id, setId] = useState(null)
 
   useEffect(() => {
     findAll()
@@ -37,7 +38,14 @@ function Category() {
           rounded
           outlined
           className="mr-2 shadow-none"
-          onClick={() => setVisible(true)}
+          onClick={async () => {
+            reset({
+              name: rowData.name,
+              code: rowData.code
+            })
+            setVisible(true)
+            setId(rowData.id)
+          }}
         />
         <Button
           icon="pi pi-trash"
@@ -45,14 +53,15 @@ function Category() {
           outlined
           severity="danger"
           className="shadow-none"
-          onClick={() => deleteProd()}
+          onClick={() => deleteProd(rowData.id)}
         />
       </React.Fragment>
     );
   };
 
-  const deleteProd = () => {
-    console.log(1);
+  const deleteProd = async (id: number) => {
+    await CategoryService.delete(id)
+    await findAll()
   };
 
   useTitle("category");
@@ -67,17 +76,17 @@ function Category() {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      name: '', 
+      name: '',
       code: '',
     },
   });
 
   const onSearch = async (data: ICategory) => {
-    console.log(1)
+    await findAll();
   };
 
   const leftToolbarTemplate = () => {
@@ -96,10 +105,19 @@ function Category() {
 
   const { showToast } = useToast();
 
-  const onSubmit = async (data: ICategory) => {
-    await CategoryService.create(data) 
-    reset();
-    showToast("Login successfully", 'success');
+  const onSubmit = async (data: any) => {
+    if (id) {
+      await CategoryService.update(data, id)
+      showToast("Update successfully", 'success');
+    } else {
+      await CategoryService.create(data)
+      showToast("Create successfully", 'success');
+    }
+    reset({
+      name: '',
+      code: ''
+    })
+    await findAll()
   };
 
 
@@ -110,7 +128,7 @@ function Category() {
           <InputText className="shadow-none" placeholder={"Nhập tên"} />
         </section>
         <section>
-          <Button className="mt-3 shadow-none" label="Tìm kiếm" />
+          <Button type="submit" className="mt-3 shadow-none" label="Tìm kiếm" />
         </section>
       </form>
       <Divider />
@@ -126,6 +144,7 @@ function Category() {
         onSelectionChange={(e: any) => setSelectedProducts(e.value)}
       >
         <Column field="name" header="Tên"></Column>
+        <Column field="code" header="Mã"></Column>
         <Column
           body={actionBodyTemplate}
           exportable={false}
@@ -139,6 +158,11 @@ function Category() {
         visible={visible}
         className="account-admin-page-dialog"
         onHide={() => {
+          reset({
+            name: '',
+            code: ''
+          })
+          setId(null)
           if (!visible) return;
           setVisible(false);
         }}
