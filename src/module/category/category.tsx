@@ -62,6 +62,7 @@ function Category() {
   const deleteProd = async (id: number) => {
     await CategoryService.delete(id)
     await findAll()
+    showToast("Delete successfully", 'success');
   };
 
   useTitle("category");
@@ -118,6 +119,7 @@ function Category() {
       code: ''
     })
     await findAll()
+    setId(null)
   };
 
 
