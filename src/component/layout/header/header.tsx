@@ -70,6 +70,13 @@ function Header() {
             navigation("/category");
           },
         },
+        {
+          label: "Sản phẩm",
+          icon: "pi pi-shield",
+          command: () => {
+            navigation("/product");
+          },
+        },
       ],
     },
     {

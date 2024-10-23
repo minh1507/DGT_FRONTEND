@@ -12,7 +12,6 @@ import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import "./category.scss"
 import { CategoryService } from "../../service/category";
-import { ICategory } from "./type/category";
 import useToast from "../../hook/toast/toast";
 
 function Category() {
@@ -86,10 +85,6 @@ function Category() {
     },
   });
 
-  const onSearch = async (data: ICategory) => {
-    await findAll();
-  };
-
   const leftToolbarTemplate = () => {
     return (
       <div className="flex flex-wrap gap-2">
@@ -124,15 +119,7 @@ function Category() {
 
 
   return (
-    <section >
-      <form className="mt-3" onSubmit={handleSubmit(onSearch)}>
-        <section>
-          <InputText className="shadow-none" placeholder={"Nhập tên"} />
-        </section>
-        <section>
-          <Button type="submit" className="mt-3 shadow-none" label="Tìm kiếm" />
-        </section>
-      </form>
+    <section>
       <Divider />
       <Toolbar
         className="mb-3"
@@ -190,7 +177,7 @@ function Category() {
             aria-describedby="name-help"
             {...register("code")}
           />
-          {errors.name && <p className="text-danger">{errors.name.message}</p>}
+          {errors.code && <p className="text-danger">{errors.code.message}</p>}
         </section>
 
         <div className="flex justify-content-end">
