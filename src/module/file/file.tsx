@@ -46,7 +46,7 @@ function File() {
   };
 
   const deleteProd = async (id: number) => {
-    await CategoryService.delete(id)
+    await FileService.delete(id)
     await findAll()
     showToast("Delete successfully", 'success');
   };

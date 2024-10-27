@@ -52,4 +52,18 @@ export class FileService{
         });
         return response.data;
       }
+
+      static delete = async (id: number) => {
+        try {
+            const response = await axios.delete('https://222.255.1.152:4600/file/' + id);
+            console.log(response.data.data)
+            return response.data.data
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                return error.response?.data
+              } else {
+                console.log('Unexpected Error:', error);
+              }
+        }
+    }
 }
