@@ -78,8 +78,8 @@ function Product() {
 
     const schema = Yup.object().shape({
         title: Yup.string().required("Tiêu đề không được để trống"),
-        oldPrice: Yup.number().required("Giá cũ không được để trống").min(0).max(1000),
-        newPrice: Yup.number().required("Giá mới không được để trống").min(0).max(1000),
+        oldPrice: Yup.number().required("Giá cũ không được để trống").min(0),
+        newPrice: Yup.number().required("Giá mới không được để trống").min(0),
         description: Yup.string().optional(),
         categoryId: Yup.number().required('Danh mục không được để trống'),
         fileId: Yup.number().required('Ảnh không được để trống'),
@@ -195,14 +195,13 @@ function Product() {
                     <Controller
                         name="oldPrice"
                         control={control}
-                        rules={{ required: 'Giá cũ không được để trống', min: 0, max: 1000 }}
+                        rules={{ required: 'Giá cũ không được để trống', min: 0 }}
                         render={({ field }) => (
                             <InputNumber
                                 placeholder="Nhập giá cũ"
                                 className="shadow-none w-full"
                                 id="oldPrice"
                                 min={0}
-                                max={1000}
                                 value={field.value}
                                 onChange={(e) => field.onChange(e.value)}
                             />
@@ -216,14 +215,13 @@ function Product() {
                     <Controller
                         name="newPrice"
                         control={control}
-                        rules={{ required: 'Giá mới không được để trống', min: 0, max: 1000 }}
+                        rules={{ required: 'Giá mới không được để trống', min: 0 }}
                         render={({ field }) => (
                             <InputNumber
                                 placeholder="Nhập giá mới"
                                 className="shadow-none w-full"
                                 id="newPrice"
                                 min={0}
-                                max={1000}
                                 value={field.value}
                                 onChange={(e) => field.onChange(e.value)}
                             />

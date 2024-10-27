@@ -17,7 +17,7 @@ import { FileService } from "../../service/file";
 
 function File() {
   const [files, setFiles] = useState([]);
-  const [id, setId] = useState(null)
+  const [selectedFile, setSelectedFile] = useState<any>(null);
 
   useEffect(() => {
     findAll()
@@ -55,8 +55,7 @@ function File() {
   const [visible, setVisible] = useState(false);
 
   const schema = Yup.object().shape({
-    name: Yup.string().required("Tên không được để trống"),
-    code: Yup.string().required("Mã không được để trống"),
+    file: Yup.mixed().required("File không được để trống"),
   });
 
   const {
@@ -67,8 +66,7 @@ function File() {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      name: '',
-      code: '',
+      file: '',
     },
   });
 
@@ -89,21 +87,25 @@ function File() {
   const { showToast } = useToast();
 
   const onSubmit = async (data: any) => {
-    await CategoryService.create(data)
+    const formData = new FormData();
+    if (selectedFile) {
+      formData.append('file', selectedFile); 
+    }
+  
+    // Call your service to upload the file
+    await FileService.create(formData);
     showToast("Create successfully", 'success');
-    reset({
-      name: '',
-      code: ''
-    })
-    await findAll()
-    setId(null)
+    reset();
+    setSelectedFile(null); // Reset the selected file
+    await findAll();
   };
+  
 
   const imageBodyTemplate = (rowData: any) => {
     return (
       <img
-        src={rowData.imageURL}  
-        alt={rowData.originName} 
+        src={rowData.imageURL}
+        alt={rowData.originName}
         style={{ width: "150px", height: "150px", objectFit: "cover" }}
       />
     );
@@ -135,41 +137,34 @@ function File() {
       </DataTable>
 
       <Dialog
-        header="Danh mục"
+        header="Ảnh"
         visible={visible}
         className="account-admin-page-dialog"
         onHide={() => {
           reset({
-            name: '',
-            code: ''
+            file: '',
           })
-          setId(null)
+          setSelectedFile(null); // Reset the selected file
+
           if (!visible) return;
           setVisible(false);
         }}
       >
         <section className="flex flex-column gap-2 mt-3">
-          <label htmlFor="name">Tên</label>
+          <label htmlFor="file">Ảnh</label>
           <InputText
-            placeholder="Nhập tên"
+            type="file" // Set type to file
+            accept="image/*" // Accept image files
             className="shadow-none w-full"
-            id="name"
-            aria-describedby="name-help"
-            {...register("name")}
+            id="file"
+            aria-describedby="code-help"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              setSelectedFile(file); // Set the selected file
+              reset({ file: file });
+            }}
           />
-          {errors.name && <p className="text-danger">{errors.name.message}</p>}
-        </section>
-
-        <section className="flex flex-column gap-2 mt-3">
-          <label htmlFor="code">Ảnh</label>
-          <InputText
-            placeholder="Nhập mã"
-            className="shadow-none w-full"
-            id="code"
-            aria-describedby="name-help"
-            {...register("code")}
-          />
-          {errors.code && <p className="text-danger">{errors.code.message}</p>}
+          {errors.file && <p className="text-danger">{errors.file.message}</p>}
         </section>
 
         <div className="flex justify-content-end">

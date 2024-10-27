@@ -43,4 +43,13 @@ export class FileService{
               }
         }
     }
+
+    static async create(formData: FormData) {
+        const response = await axios.post('https://222.255.1.152:4600/file/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        return response.data;
+      }
 }
