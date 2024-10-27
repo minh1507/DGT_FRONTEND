@@ -4,7 +4,7 @@ import { ICategory } from '../module/category/type/category';
 export class CategoryService{
     static findAll = async () => {
         try {
-            const response = await axios.get('http://222.255.1.152:4600/category', {
+            const response = await axios.get('https://222.255.1.152:4600/category', {
                 params: {
                     limit: 500,
                     offset: 0
@@ -22,7 +22,7 @@ export class CategoryService{
 
     static create = async (data: ICategory) => {
         try {
-            const response = await axios.post('http://222.255.1.152:4600/category', data, {
+            const response = await axios.post('https://222.255.1.152:4600/category', data, {
                 headers: {
                   'Content-Type': 'application/json',
                 }
@@ -40,7 +40,7 @@ export class CategoryService{
 
     static update = async (data: ICategory, id: number) => {
         try {
-            const response = await axios.patch('http://222.255.1.152:4600/category/' + id, data, {
+            const response = await axios.patch('https://222.255.1.152:4600/category/' + id, data, {
                 headers: {
                   'Content-Type': 'application/json',
                 }

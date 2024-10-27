@@ -8,6 +8,7 @@ const portalNamespace = {
   Auth: lazy(() => import("./auth/auth")),
   Category: lazy(() => import("./category/category")),
   Product: lazy(() => import("./product/product")),
+  File: lazy(() => import("./file/file"))
 };
 
 const SharedNamespace = {
@@ -37,6 +38,7 @@ function PortalModule() {
           <Route path="" element={<LayoutNamespace.Layout />}>
             <Route path="/product" element={<portalNamespace.Product />} />
             <Route path="/category" element={<portalNamespace.Category />} />
+            <Route path="/file" element={<portalNamespace.File />} />
             <Route path="/" element={<portalNamespace.Home />} />
             <Route path="home" element={<Navigate to="/" />} />
           </Route>

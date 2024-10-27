@@ -77,6 +77,13 @@ function Header() {
             navigation("/product");
           },
         },
+        {
+          label: "Ảnh",
+          icon: "pi pi-shield",
+          command: () => {
+            navigation("/file");
+          },
+        },
       ],
     },
     {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { useTitle } from "../../hook/title/title";
 import { Column } from "primereact/column";
@@ -15,16 +15,14 @@ import { ProductService } from "../../service/product";
 import './product.scss'
 import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
-import { ICategory } from "../category/type/category";
 import { InputTextarea } from "primereact/inputtextarea";
-import { FileUpload } from "primereact/fileupload";
+import { FileService } from "../../service/file";
 
 function Product() {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState<any[]>([]);
+    const [files, setFiles] = useState<any[]>([])
     const [id, setId] = useState(null)
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const fileUploadRef = useRef<any>(null);
 
     useEffect(() => {
         findAll()
@@ -33,8 +31,10 @@ function Product() {
     const findAll = async () => {
         const products = await ProductService.findAll()
         const categories = await CategoryService.findAll()
+        const files = await FileService.findAll()
         setProducts(products)
         setCategories(categories)
+        setFiles(files)
     }
 
     const [selectedProducts, setSelectedProducts] = useState([]);
@@ -81,8 +81,8 @@ function Product() {
         oldPrice: Yup.number().required("Giá cũ không được để trống").min(0).max(1000),
         newPrice: Yup.number().required("Giá mới không được để trống").min(0).max(1000),
         description: Yup.string().optional(),
-        category: Yup.number().required('Danh mục không được để trống'),
-        image: Yup.mixed().required('Hình ảnh là bắt buộc').nullable(),
+        categoryId: Yup.number().required('Danh mục không được để trống'),
+        fileId: Yup.number().required('Ảnh không được để trống'),
     });
 
     const {
@@ -99,8 +99,8 @@ function Product() {
             oldPrice: 1,
             newPrice: 1,
             description: '',
-            category: categories[0]?.id,
-            image: null,
+            categoryId: categories[0]?.id,
+            fileId: files[0]?.id,
         },
     });
 
@@ -121,31 +121,18 @@ function Product() {
     const { showToast } = useToast();
 
     const onSubmit = async (data: any) => {
-        console.log(data)
-        // if (id) {
-        //     await CategoryService.update(data, id)
-        //     showToast("Update successfully", 'success');
-        // } else {
-        //     await CategoryService.create(data)
-        //     showToast("Create successfully", 'success');
-        // }
-        // reset({
-        //     title: '',
-        // })
-        // await findAll()
-        // setId(null)
-    };
-
-    const handleFileChange = (e: any) => {
-        const file = e.files[0]; // Access the first file from the FileUpload component
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result as string); // Set the image preview state
-            };
-            reader.readAsDataURL(file); // Read the file for preview
-            setValue('image', file); // Set the image file in the form state
+        if (id) {
+            await ProductService.update(data, id)
+            showToast("Update successfully", 'success');
+        } else {
+            await ProductService.create(data)
+            showToast("Create successfully", 'success');
         }
+        reset({
+            title: '',
+        })
+        await findAll()
+        setId(null)
     };
 
     return (
@@ -183,11 +170,10 @@ function Product() {
                         oldPrice: 1,
                         newPrice: 1,
                         description: '',
-                        category: categories[0]?.id,
-                        image: null,
+                        categoryId: categories[0]?.id,
+                        fileId: files[0]?.id,
                     })
                     setId(null)
-                    setImagePreview(null);
                     if (!visible) return;
                     setVisible(false);
                 }}
@@ -249,11 +235,11 @@ function Product() {
                 <section className="flex flex-column gap-2 mt-3">
                     <label htmlFor="category">Danh mục</label>
                     <Controller
-                        name="category"
+                        name="categoryId"
                         control={control}
                         render={({ field }) => (
                             <Dropdown
-                                id="category"
+                                id="categoryId"
                                 placeholder="Chọn danh mục"
                                 className="shadow-none w-full"
                                 options={categories.map((cat) => ({ label: cat.name, value: cat.id }))}
@@ -262,8 +248,42 @@ function Product() {
                             />
                         )}
                     />
-                    {errors.category && <p className="text-danger">{errors.category.message}</p>}
+                    {errors.categoryId && <p className="text-danger">{errors.categoryId.message}</p>}
                 </section>
+
+                <section className="flex flex-column gap-2 mt-3">
+                    <label htmlFor="fileId">Ảnh</label>
+                    <Controller
+                        name="fileId"
+                        control={control}
+                        render={({ field }) => (
+                            <Dropdown
+                                id="fileId"
+                                placeholder="Chọn ảnh"
+                                className="shadow-none w-full"
+                                options={files.map((file) => ({
+                                    label: file.originName,
+                                    value: file.id,
+                                    imageURL: file.imageURL, 
+                                }))}
+                                value={field.value}
+                                onChange={(e) => field.onChange(e.value)}
+                                itemTemplate={(option) => (
+                                    <div className="flex align-items-center">
+                                        <img
+                                            src={option.imageURL}
+                                            alt={option.label}
+                                            style={{ width: "30px", height: "30px", objectFit: "cover", marginRight: "8px" }}
+                                        />
+                                        <span>{option.label}</span>
+                                    </div>
+                                )}
+                            />
+                        )}
+                    />
+                    {errors.fileId && <p className="text-danger">{errors.fileId.message}</p>}
+                </section>
+
 
                 <section className="flex flex-column gap-2 mt-3">
                     <label htmlFor="description">Mô tả</label>
@@ -281,41 +301,6 @@ function Product() {
                         )}
                     />
                     {errors.description && <p className="text-danger">{errors.description.message}</p>}
-                </section>
-
-                <section className="flex flex-column gap-2 mt-3">
-                    <label htmlFor="image">Chọn hình ảnh</label>
-                    <Controller
-                        name="image"
-                        control={control}
-                        render={({ field }) => (
-                            <FileUpload
-                                ref={fileUploadRef}
-                                mode="basic"
-                                accept="image/*"
-                                maxFileSize={15000000}
-                                onSelect={(e) => {
-                                    field.onChange(e.files[0]);
-                                    handleFileChange(e)
-                                }} 
-                                onError={(e) => console.log('Upload failed:', e)}
-                                onClear={() => {
-                                    field.onChange(null);
-                                    setImagePreview(null); 
-                                    fileUploadRef.current.clear();
-                                }}
-                                multiple={false}
-                            />
-                        )}
-                    />
-                    {errors.image && <p className="text-danger">{errors.image.message}</p>}
-                    {imagePreview && (
-                        <img
-                            src={imagePreview}
-                            alt="Preview"
-                            className="mt-2 w-24 h-24 object-cover"
-                        />
-                    )}
                 </section>
 
                 <div className="flex justify-content-end">

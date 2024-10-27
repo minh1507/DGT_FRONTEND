@@ -3,7 +3,7 @@ import axios from 'axios';
 export class ProductService{
     static findAll = async () => {
         try {
-            const response = await axios.get('http://222.255.1.152:4600/product');
+            const response = await axios.get('https://222.255.1.152:4600/product');
             return response.data.data
         } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
@@ -16,7 +16,7 @@ export class ProductService{
 
     static create = async (data: any) => {
         try {
-            const response = await axios.post('http://222.255.1.152:4600/product', data, {
+            const response = await axios.post('https://222.255.1.152:4600/product', data, {
                 headers: {
                   'Content-Type': 'application/json',
                 }
@@ -34,7 +34,7 @@ export class ProductService{
 
     static update = async (data: any, id: number) => {
         try {
-            const response = await axios.patch('http://222.255.1.152:4600/product/' + id, data, {
+            const response = await axios.patch('https://222.255.1.152:4600/product/' + id, data, {
                 headers: {
                   'Content-Type': 'application/json',
                 }
@@ -52,7 +52,7 @@ export class ProductService{
 
     static delete = async (id: number) => {
         try {
-            const response = await axios.delete('http://222.255.1.152:4600/product/' + id);
+            const response = await axios.delete('https://222.255.1.152:4600/product/' + id);
             return response.data.data
         } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
