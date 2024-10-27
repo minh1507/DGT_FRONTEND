@@ -254,7 +254,7 @@ function Product() {
                     {errors.categoryId && <p className="text-danger">{errors.categoryId.message}</p>}
                 </section>
 
-                <section className="flex flex-column gap-2 mt-3">
+               {!id &&  <section className="flex flex-column gap-2 mt-3">
                     <label htmlFor="fileId">Ảnh</label>
                     <Controller
                         name="fileId"
@@ -285,7 +285,7 @@ function Product() {
                         )}
                     />
                     {errors.fileId && <p className="text-danger">{errors.fileId.message}</p>}
-                </section>
+                </section>}
 
 
                 <section className="flex flex-column gap-2 mt-3">
