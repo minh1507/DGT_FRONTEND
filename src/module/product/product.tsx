@@ -47,9 +47,14 @@ function Product() {
                     rounded
                     outlined
                     className="mr-2 shadow-none"
-                    onClick={async () => {
+                    onClick={() => {
                         reset({
                             title: rowData.title,
+                            oldPrice: rowData.oldPrice,
+                            newPrice: rowData.newPrice,
+                            description: rowData.description,
+                            categoryId: rowData.category?.id,
+                            fileId: rowData.file?.id
                         })
                         setVisible(true)
                         setId(rowData.id)
