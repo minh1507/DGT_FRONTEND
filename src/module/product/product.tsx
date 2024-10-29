@@ -73,7 +73,7 @@ function Product() {
     };
 
     const deleteProd = async (id: number) => {
-        await CategoryService.delete(id)
+        await ProductService.delete(id)
         await findAll()
         showToast("Delete successfully", 'success');
     };
