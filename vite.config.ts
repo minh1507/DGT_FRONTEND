@@ -10,5 +10,9 @@ export default defineConfig({
     watch: {
       usePolling: true, 
     },
+    https: {
+      key: './ssl/private-key.pem',      
+      cert: './ssl/fullchain.pem'
+    },
   }
 })
