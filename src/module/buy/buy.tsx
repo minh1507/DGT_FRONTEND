@@ -26,7 +26,7 @@ function Buy() {
     return (
       <React.Fragment>
         <Button
-          icon="pi pi-trash"
+          icon="pi-briefcase"
           rounded
           outlined
           severity="danger"
