@@ -89,6 +89,7 @@ function Buy() {
         <Column field="phone" header="Liên hệ"></Column>
         <Column field="product.title" header="Sản phẩm"></Column>
         <Column field="quantity" header="Số lượng"></Column>
+        <Column field="type" header="Loại"></Column>
         <Column
           body={purchaseStatusTemplate} // Add this column
           header="Trạng thái"
