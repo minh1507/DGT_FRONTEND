@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
 import "./buy.scss"
-import { CategoryService } from "../../service/category";
 import useToast from "../../hook/toast/toast";
 import { BuyService } from "../../service/buy";
 
@@ -19,7 +18,6 @@ function Buy() {
   const findAll = async () => {
     const buys = await BuyService.findAll()
     setBuys(buys)
-    console.log(buys)
   }
 
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -27,22 +25,19 @@ function Buy() {
   const actionBodyTemplate = (rowData: any) => {
     return (
       <React.Fragment>
-        {/* <Button
+        <Button
           icon="pi pi-trash"
           rounded
           outlined
           severity="danger"
           className="shadow-none"
-          onClick={() => deleteProd(rowData.id)}
-        /> */}
+          onClick={() => {
+            BuyService.update(rowData.id)
+            findAll();
+          }}
+        />
       </React.Fragment>
     );
-  };
-
-  const deleteProd = async (id: number) => {
-    await CategoryService.delete(id)
-    await findAll()
-    showToast("Delete successfully", 'success');
   };
 
   const purchaseStatusTemplate = (rowData: any) => {
