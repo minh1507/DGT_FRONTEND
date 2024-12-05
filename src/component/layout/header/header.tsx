@@ -87,10 +87,10 @@ function Header() {
       ],
     },
     {
-      label: "Dashboard",
+      label: "Đơn hàng",
       icon: "pi pi-chart-bar",
       command: () => {
-        navigation("/chart");
+        navigation("/buy");
       },
     },
   ];
