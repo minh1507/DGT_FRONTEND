@@ -31,9 +31,9 @@ function Buy() {
           outlined
           severity="danger"
           className="shadow-none"
-          onClick={() => {
-            BuyService.update(rowData.id)
-            findAll();
+          onClick={async() => {
+            await BuyService.update(rowData.id)
+            await findAll();
           }}
         />
       </React.Fragment>
